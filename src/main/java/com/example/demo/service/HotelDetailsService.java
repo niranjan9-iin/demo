@@ -1,25 +1,29 @@
 package com.example.demo.service;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.example.demo.model.HotelDetailsResponse;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ihg.cro.commons.domainObjects.hcm.rest.response.HotelContentWrapper;
-import com.ihg.cro.commons.domainObjects.hcm.rest.response.HotelContentsResponseObject;
 
 @Service
 public class HotelDetailsService {
 	@Autowired
 	private RestTemplate restTemplate;
+	public static ArrayList<String> fieldsets = new ArrayList<>(Arrays.asList("accessibility", "address",
+			"alternatePayments", "attractions", "awardsAndRatings", "badges", "barAndLounge", "brandInfo",
+			"businessCenter", "contact", "contactInformation", "corporatePrograms", "evCharging", "facilities", "fee",
+			"foodAndBeverage", "greenEngage", "highlights", "hotelFacilities", "location", "marketing", "media",
+			"nonRoomInventory", "parking", "policies", "poolAndFitness", "profile", "publicAreas", "recreations",
+			"renovations", "restaurant", "room", "roomTypes", "safety", "services", "shoppingFacilities", "tax",
+			"technology", "transportation", "weddingDetails", "payments"));
 
 	public String getHotelDetails(String hotelCode, String brandCode) {
 		// Generate URLs for v1 and v3
@@ -31,6 +35,7 @@ public class HotelDetailsService {
 		Object responseV3 = null;
 		String result = "";
 		try {
+			System.out.println("URL:" + v1);
 			// Execute first request
 			responseV1 = restTemplate.exchange(v1, HttpMethod.GET, generateHeaders(), Object.class).getBody();
 
@@ -60,7 +65,7 @@ public class HotelDetailsService {
 
 	private String generateURL(String version, String hotelCode, String brandCode) {
 		return "https://staging-api.ihg.com/hotels/" + version + "/profiles/" + hotelCode + "/details?brandCode="
-				+ brandCode + "&fieldset=profile";
+				+ brandCode + "&fieldset=" + String.join(",", fieldsets);
 	}
 
 	private HttpEntity<String> generateHeaders() {

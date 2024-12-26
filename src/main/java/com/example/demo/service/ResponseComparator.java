@@ -30,7 +30,7 @@ public class ResponseComparator {
 					System.out.println("Difference in field " + fieldName + ":");
 					result += "\nDifference in field " + fieldName + ":\n";
 					System.out.println("  API 1 (V3) Value: " + value1);
-					result += "\n  API 1 (V3) Value: \" + " + value1 + "\n";
+					result += "\n  API 1 (V3) Value: " + value1 + "\n";
 					System.out.println("  API 2 (V1) Value: " + value2);
 					result += "\n  API 2 (V1) Value: " + value2 + "\n";
 				}
