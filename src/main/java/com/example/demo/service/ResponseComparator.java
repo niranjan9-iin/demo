@@ -29,12 +29,14 @@ public class ResponseComparator {
 				result += "\nComparing array: " + fieldName + "\n";
 				compareArrays(value1, value2, fieldName);
 			} else if (!value1.equals(value2)) {
-				System.out.println("Difference in field " + fieldName + ":");
-				result += "\nDifference in field " + fieldName + ":\n";
-				System.out.println("  API 1 (V3) Value: " + value1);
-				result += "\n  API 1 (V3) Value: \" + " + value1 + "\n";
-				System.out.println("  API 2 (V1) Value: " + value2);
-				result += "\n  API 2 (V1) Value: " + value2 + "\n";
+				if (!compareLocalValues(value1, value2)) {
+					System.out.println("Difference in field " + fieldName + ":");
+					result += "\nDifference in field " + fieldName + ":\n";
+					System.out.println("  API 1 (V3) Value: " + value1);
+					result += "\n  API 1 (V3) Value: \" + " + value1 + "\n";
+					System.out.println("  API 2 (V1) Value: " + value2);
+					result += "\n  API 2 (V1) Value: " + value2 + "\n";
+				}
 			}
 		}
 
@@ -73,39 +75,10 @@ public class ResponseComparator {
 			}
 		}
 	}
-	/*
-	 * public static void parseResponse(String jsonResponse, ObjectMapper
-	 * objectMapper) { try { // Parse the JSON string JsonNode rootNode =
-	 * objectMapper.readTree(jsonResponse); // Handle "hotelContent" or "hotelInfo"
-	 * nodes dynamically if (rootNode.has("hotelContent")) { JsonNode
-	 * hotelContentArray = rootNode.get("hotelContent"); if
-	 * (hotelContentArray.isArray()) { for (JsonNode hotel : hotelContentArray) {
-	 * parseHotelObject(hotel); } } else {
-	 * System.out.println("hotelContent is not an array."); } } else if
-	 * (rootNode.has("hotelInfo")) { JsonNode hotelInfoNode =
-	 * rootNode.get("hotelInfo"); parseHotelObject(hotelInfoNode); } else {
-	 * System.out.println("No recognizable hotel node found."); } } catch (Exception
-	 * e) { e.printStackTrace(); } }
-	 * 
-	 * private static void parseHotelObject(JsonNode hotelNode) {
-	 * System.out.println("Hotel Object:"); Iterator<String> fieldNames =
-	 * hotelNode.fieldNames();
-	 * 
-	 * while (fieldNames.hasNext()) { String fieldName = fieldNames.next(); JsonNode
-	 * fieldValue = hotelNode.get(fieldName);
-	 * 
-	 * if (fieldValue.isObject()) { System.out.println("  " + fieldName +
-	 * " (object):"); Iterator<String> subFieldNames = fieldValue.fieldNames();
-	 * while (subFieldNames.hasNext()) { String subFieldName = subFieldNames.next();
-	 * JsonNode subFieldValue = fieldValue.get(subFieldName); if
-	 * (subFieldValue.isArray()) { System.out.println("    " + subFieldName +
-	 * " (array):"); for (JsonNode arrayItem : subFieldValue) {
-	 * System.out.println("      - " + arrayItem.asText()); } } else {
-	 * System.out.println("    " + subFieldName + ": " + subFieldValue); } } } else
-	 * if (fieldValue.isArray()) { System.out.println("  " + fieldName +
-	 * " (array):"); for (JsonNode arrayItem : fieldValue) {
-	 * System.out.println("    - " + arrayItem.asText()); } } else {
-	 * System.out.println("  " + fieldName + ": " + fieldValue); } } }
-	 */
+
+	private static boolean compareLocalValues(JsonNode value1, JsonNode value2) {
+		return value1.isArray() && value1.get(0).get("locale").asText().equals("en_US")
+				&& value1.get(0).get("value").equals(value2);
+	}
 
 }
