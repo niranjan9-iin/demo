@@ -9,6 +9,7 @@ public class ResponseComparator {
 
 	public static String compareNodes(JsonNode node1, JsonNode node2) {
 		System.out.println("Comparing nodes V3 and V1:");
+		result += "\nComparing nodes V3 and V1:\n";
 		// here node1 is v3 api & node2 is v1 api
 		Iterator<String> fieldNames1 = node1.fieldNames();
 		while (fieldNames1.hasNext()) {
@@ -51,18 +52,23 @@ public class ResponseComparator {
 
 	private static void compareArrays(JsonNode array1, JsonNode array2, String fieldName) {
 		System.out.println("Comparing arrays for field: " + fieldName);
-
+		result += "\nComparing arrays for field: " + fieldName + "\n";
 		if (array1.size() != array2.size()) {
 			System.out.println("  Array size mismatch: API 1 (v3) size = " + array1.size() + ", API 2 (v1) size = "
 					+ array2.size());
+			result += "\n  Array size mismatch: API 1 (v3) size = " + array1.size() + ", API 2 (v1) size = "
+					+ array2.size() + "\n";
 		} else {
 			for (int i = 0; i < array1.size(); i++) {
 				JsonNode item1 = array1.get(i);
 				JsonNode item2 = array2.get(i);
 				if (!item1.equals(item2)) {
 					System.out.println("  Difference at index " + i + ":");
+					result += "\n  Difference at index " + i + ":\n";
 					System.out.println("    API 1 (v3) Value: " + item1);
+					result += "\n    API 1 (v3) Value: " + item1 + "\n";
 					System.out.println("    API 2 (v1) Value: " + item2);
+					result += "\n    API 2 (v1) Value: " + item2 + "\n";
 				}
 			}
 		}
