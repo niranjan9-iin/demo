@@ -9,7 +9,6 @@ public class ResponseComparator {
 
 	public static String compareNodes(JsonNode node1, JsonNode node2) {
 		System.out.println("Comparing nodes V3 and V1:");
-		result += "\nComparing nodes V3 and V1:\n";
 		// here node1 is v3 api & node2 is v1 api
 		Iterator<String> fieldNames1 = node1.fieldNames();
 		while (fieldNames1.hasNext()) {
@@ -22,11 +21,9 @@ public class ResponseComparator {
 				result += "\nField " + fieldName + " is missing in V1 API.\n";
 			} else if (value1.isObject() && value2.isObject()) {
 				System.out.println("Comparing nested object: " + fieldName);
-				result += "\nComparing nested object: " + fieldName + "\n";
 				compareNodes(value1, value2);
 			} else if (value1.isArray() && value2.isArray()) {
 				System.out.println("Comparing array: " + fieldName);
-				result += "\nComparing array: " + fieldName + "\n";
 				compareArrays(value1, value2, fieldName);
 			} else if (!value1.equals(value2)) {
 				if (!compareLocalValues(value1, value2)) {
@@ -54,7 +51,6 @@ public class ResponseComparator {
 
 	private static void compareArrays(JsonNode array1, JsonNode array2, String fieldName) {
 		System.out.println("Comparing arrays for field: " + fieldName);
-		result += "\nComparing arrays for field: " + fieldName + "\n";
 		if (array1.size() != array2.size()) {
 			System.out.println("  Array size mismatch: API 1 (v3) size = " + array1.size() + ", API 2 (v1) size = "
 					+ array2.size());
