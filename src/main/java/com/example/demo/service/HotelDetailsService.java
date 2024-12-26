@@ -41,15 +41,16 @@ public class HotelDetailsService {
 			String jsonResponse1 = objectMapper.writeValueAsString(responseV1);
 			String jsonResponse2 = objectMapper.writeValueAsString(responseV3);
 			// Parse JSON strings
-            JsonNode rootNode1 = objectMapper.readTree(jsonResponse1);
-            JsonNode rootNode2 = objectMapper.readTree(jsonResponse2);
+			JsonNode rootNode1 = objectMapper.readTree(jsonResponse1);
+			JsonNode rootNode2 = objectMapper.readTree(jsonResponse2);
 
-            // Compare "hotelContent" and "hotelInfo" nodes
-            if (rootNode2.has("hotelContent") && rootNode1.has("hotelInfo")) {
-               result= ResponseComparator.compareNodes(rootNode2.get("hotelContent").get(0), rootNode1.get("hotelInfo"));
-            } else {
-                System.out.println("No matching nodes (hotelContent and hotelInfo) found for comparison.");
-            }
+			// Compare "hotelContent" and "hotelInfo" nodes
+			if (rootNode2.has("hotelContent") && rootNode1.has("hotelInfo")) {
+				result = ResponseComparator.compareNodes(rootNode2.get("hotelContent").get(0),
+						rootNode1.get("hotelInfo"));
+			} else {
+				System.out.println("No matching nodes (hotelContent and hotelInfo) found for comparison.");
+			}
 		} catch (Exception ex) {
 			throw new RuntimeException("Error while fetching hotel details: " + ex.getMessage(), ex);
 		}
