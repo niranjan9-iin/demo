@@ -61,17 +61,22 @@ public class ResponseComparator {
 				JsonNode item1 = array1.get(i);
 				JsonNode item2 = array2.get(i);
 				if (!item1.equals(item2)) {
-					System.out.println("  Difference at index " + i + ":");
-					result += "\n  Difference at index " + i + ":\n";
-					System.out.println("    API 1 (v3) Value: " + item1);
-					result += "\n    API 1 (v3) Value: " + item1 + "\n";
-					System.out.println("    API 2 (v1) Value: " + item2);
-					result += "\n    API 2 (v1) Value: " + item2 + "\n";
+					if (item1.isObject() && item2.isObject()) {
+						compareNodes(item1, item2);
+					} else {
+						System.out.println("  Difference at index " + i + ":");
+						result += "\n  Difference at index " + i + ":\n";
+						System.out.println("    API 1 (v3) Value: " + item1);
+						result += "\n    API 1 (v3) Value: " + item1 + "\n";
+						System.out.println("    API 2 (v1) Value: " + item2);
+						result += "\n    API 2 (v1) Value: " + item2 + "\n";
+					}
 				}
 			}
 		}
 	}
 
+	// This method will compare the en_US locale with Value from v1 and v3
 	private static boolean compareLocalValues(JsonNode value1, JsonNode value2) {
 		return value1.isArray() && value1.get(0).get("locale").asText().equals("en_US")
 				&& value1.get(0).get("value").equals(value2);
