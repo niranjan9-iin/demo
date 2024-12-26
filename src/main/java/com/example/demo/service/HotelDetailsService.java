@@ -21,7 +21,7 @@ public class HotelDetailsService {
 	@Autowired
 	private RestTemplate restTemplate;
 
-	public Object getHotelDetails(String hotelCode, String brandCode) {
+	public String getHotelDetails(String hotelCode, String brandCode) {
 		// Generate URLs for v1 and v3
 		String v1 = generateURL("v1", hotelCode, brandCode);
 		String v3 = generateURL("v3", hotelCode, brandCode);
@@ -29,7 +29,7 @@ public class HotelDetailsService {
 		// Initialize responses
 		Object responseV1 = null;
 		Object responseV3 = null;
-
+		String result = "";
 		try {
 			// Execute first request
 			responseV1 = restTemplate.exchange(v1, HttpMethod.GET, generateHeaders(), Object.class).getBody();
@@ -46,7 +46,7 @@ public class HotelDetailsService {
 
             // Compare "hotelContent" and "hotelInfo" nodes
             if (rootNode2.has("hotelContent") && rootNode1.has("hotelInfo")) {
-                ResponseComparator.compareNodes(rootNode2.get("hotelContent").get(0), rootNode1.get("hotelInfo"));
+               result= ResponseComparator.compareNodes(rootNode2.get("hotelContent").get(0), rootNode1.get("hotelInfo"));
             } else {
                 System.out.println("No matching nodes (hotelContent and hotelInfo) found for comparison.");
             }
@@ -54,7 +54,7 @@ public class HotelDetailsService {
 			throw new RuntimeException("Error while fetching hotel details: " + ex.getMessage(), ex);
 		}
 
-		return responseV3;
+		return result;
 	}
 
 	private String generateURL(String version, String hotelCode, String brandCode) {

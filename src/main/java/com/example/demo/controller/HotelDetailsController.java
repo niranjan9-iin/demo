@@ -18,7 +18,7 @@ public class HotelDetailsController {
 	private HotelDetailsService hotelService;
 
 	@GetMapping("/getHotelDetails")
-	public Object getHotelDetails() {
+	public String getHotelDetails() {
 		return hotelService.getHotelDetails("ATLBH", "ICON");
 	}
 }
