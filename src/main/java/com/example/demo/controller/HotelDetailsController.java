@@ -17,8 +17,8 @@ public class HotelDetailsController {
 	@Autowired
 	private HotelDetailsService hotelService;
 
-	@GetMapping("/getHotelDetails")
-	public String getHotelDetails() {
-		return hotelService.getHotelDetails("ATLBH", "ICON");
+	@GetMapping("/getHotelDetails/{hotelCode}/{brandCode}")
+	public String getHotelDetails(@PathVariable String hotelCode, @PathVariable String brandCode) {
+		return hotelService.getHotelDetails(hotelCode, brandCode);
 	}
 }
